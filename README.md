@@ -109,6 +109,10 @@ Central controller that parses CLI arguments and triggers the appropriate functi
 
 Builds and returns an argparse parser with all CLI options.
 
+### `test_cupp.py`
+
+- This script is spacially made for Devlopers it will be useful for testing CUPP's core functions so devlopers can be sure that after updating it the script wouldn't break
+
 ---
 
 ## 🧪 Entry Point
