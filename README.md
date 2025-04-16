@@ -1,117 +1,145 @@
-# CUPP - Common User Passwords Profiler
+# 🔐 CUPP (Common User Passwords Profiler) - Function Documentation
 
-[![Build Status](https://travis-ci.org/Mebus/cupp.svg?branch=master)](https://travis-ci.org/Mebus/cupp)
-[![Coverage Status](https://coveralls.io/repos/github/Mebus/cupp/badge.svg)](https://coveralls.io/github/Mebus/cupp)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a578dde078ef481e97a0e7eac0c8d312)](https://app.codacy.com/app/Mebus/cupp?utm_source=github.com&utm_medium=referral&utm_content=Mebus/cupp&utm_campaign=Badge_Grade_Dashboard)
-[![Rawsec's CyberSecurity Inventory](https://inventory.raw.pm/img/badges/Rawsec-inventoried-FF5050_plastic.svg)](https://inventory.raw.pm/)
+CUPP is a Python tool used to generate personalized wordlists for password cracking or penetration testing.
+It works by taking user-provided profile information (e.g., name, birthdate, spouse, etc.) and producing a
+highly customized list of password guesses based on common patterns like name+year, leetspeak, pet names,
+and more.
 
- 
-## About
+This document provides an overview and explanation of every function in the `cupp.py` script.
 
-  The most common form of authentication is the combination of a username
-  and a password or passphrase. If both match values stored within a locally
-  stored table, the user is authenticated for a connection. Password strength is
-  a measure of the difficulty involved in guessing or breaking the password
-  through cryptographic techniques or library-based automated testing of
-  alternate values.
+---
 
-  A weak password might be very short or only use alphanumberic characters,
-  making decryption simple. A weak password can also be one that is easily
-  guessed by someone profiling the user, such as a birthday, nickname, address,
-  name of a pet or relative, or a common word such as God, love, money or password.
-
-  That is why CUPP was born, and it can be used in situations like legal
-  penetration tests or forensic crime investigations.
-
-
-Requirements
-------------
-
-You need Python 3 to run CUPP.
-
-Quick start
------------
-
-    $ python3 cupp.py -h
-
-## Options
-
-  Usage: cupp.py [OPTIONS]
-
-        -h      this menu
-
-        -i      Interactive questions for user password profiling
-
-        -w      Use this option to profile existing dictionary,
-                or WyD.pl output to make some pwnsauce :)
-
-        -l      Download huge wordlists from repository
-
-        -a      Parse default usernames and passwords directly from Alecto DB.
-                Project Alecto uses purified databases of Phenoelit and CIRT which where merged and enhanced.
-
-        -v      Version of the program
-
-
-
-## Configuration
-
-   CUPP has configuration file cupp.cfg with instructions.
-
-## Example (Fast forwarded)
+### Example video
 
 ![cupp-example](screenshots/cupp-example.gif)
 
-## License
+## Global Variables
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 3 of the License, or
-  any later version.
+### `CONFIG`
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+A global dictionary that stores configuration loaded from `cupp.cfg`. It contains:
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+- `global`: year ranges, special characters, word length limits, etc.
+- `LEET`: mappings for leetspeak substitutions (e.g., `a → 4`, `e → 3`).
+- `Other`: options like links to download dictionary.
 
-  See './LICENSE' for more information.
+---
 
-## Github import
+## 🔧 Function Reference
 
-This project was imported into https://github.com/Mebus/cupp by Mebus from:  
-http://www.remote-exploit.org/content/cupp-3.0.tar.gz  
-http://www.remote-exploit.org/articles/misc_research__amp_code/index.html  
-to encourage further development of the tool.
+### `read_config(filename)`
 
-## Original author
+Reads the `cupp.cfg` configuration file and fills the `CONFIG` dictionary with values.
 
-  Muris Kurgas aka j0rgan  
-  j0rgan@remote-exploit.org  
-  http://www.remote-exploit.org  
-  http://www.azuzi.me  
+- Parses sections like `[years]`, `[specialchars]`, etc.
+- Loads leetspeak mappings into `CONFIG["LEET"]`.
 
+### `make_leet(x)`
 
-## Contributors
+Converts a given string `x` into leetspeak using the `CONFIG["LEET"]` mapping.
 
-  * Bosko Petrovic aka bolexxx  
-  bole_loser@hotmail.com  
-  http://www.offensive-security.com  
-  http://www.bolexxx.net  
+### `concats(seq, start, stop)`
 
-  * Mebus  
-    https://github.com/Mebus/  
+Generates strings by appending a range of numbers to each string in `seq`.
 
-  * Abhro  
-    https://github.com/Abhro/  
+### `komb(seq, start, special="")`
 
-  * Andrea Giacomo  
-    https://github.com/codepr
+Yields combinations of `seq + special + start` elements.
 
-  * quantumcore  
-    https://github.com/quantumcore
-    
+### `print_to_file(filename, unique_list_finished)`
 
+Saves a sorted password list to a file and optionally prints it with animations.
+
+### `print_cow()`
+
+Prints a fun ASCII cow banner with program branding.
+
+### `version()`
+
+Displays the current version of CUPP with credits.
+
+### `improve_dictionary(file_to_open)`
+
+Enhances an existing wordlist by applying transformations like:
+
+- Leet mode
+- Special chars
+- Random number suffixes
+- Word concatenations
+
+### `interactive()`
+
+Prompts the user for profile data interactively and passes it to the generator.
+
+### `generate_wordlist_from_profile(profile)`
+
+Generates a highly customized password wordlist using profile details. Applies:
+
+- Names + years
+- Special characters
+- Reversed words
+- Leet transformations
+- Length filtering
+
+### `download_http(url, targetfile)`
+
+Downloads a file from a URL to the local filesystem.
+
+### `alectodb_download()`
+
+Downloads and extracts default credentials from the Alecto database.
+
+### `download_wordlist()`
+
+Displays a list of wordlist categories and lets the user download them.
+
+### `download_wordlist_http(filedown)`
+
+Downloads multiple dictionary files from selected category folders.
+
+### `mkdir_if_not_exists(dire)`
+
+Creates a directory if it doesn't already exist.
+
+### `main()`
+
+Central controller that parses CLI arguments and triggers the appropriate function.
+
+### `get_parser()`
+
+Builds and returns an argparse parser with all CLI options.
+
+---
+
+## 🧪 Entry Point
+
+```python
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+## ✅ Summary
+
+CUPP is a customizable wordlist generator that takes advantage of personal profiling and pattern-based logic to create realistic, target-specific password lists. It includes features like:
+
+- Leetspeak transformation
+- Random number and special char appending
+- Wordlist improvement
+- Alecto database integration
+- Wordlist download from public
+
+## Scope of Improvement
+
+- Updating it from CLI to GUI using libraries like `Tkinter`.
+- This tool can be integrated with other data scraping tools like `SpiderFoot` and `Recon-ng`.
+
+## [ Team Members ]
+
+| Name              | Roll Number                                | Group       |
+| ----------------- | ------------------------------------------ | ----------- |
+| **Rudra Patel**   | [202404028](mailto:202404028@daiict.ac.in) | G6 (Leader) |
+| **Pranav Patel**  | 202404051                                  | G6          |
+| **Devanshi Modi** | 202401498                                  | G6          |
+| **Deep Sutariya** | 202401219                                  | G4          |
