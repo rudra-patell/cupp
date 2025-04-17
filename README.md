@@ -6,6 +6,30 @@ highly customized list of password guesses based on common patterns like name+ye
 and more.
 
 This document provides an overview and explanation of every function in the `cupp.py` script.
+Requirements
+------------
+
+You need Python 3 to run CUPP.
+
+Quick start
+-----------
+
+    $ python3 cupp.py -h
+
+## Options
+
+  Usage: cupp.py [OPTIONS]
+
+        -h      this menu
+
+        -i      Interactive questions for user password profiling
+
+        -l      Download huge wordlists from repository
+
+        -a      Parse default usernames and passwords directly from Alecto DB.
+                Project Alecto uses purified databases of Phenoelit and CIRT which where merged and enhanced.
+
+        -v      Version of the program
 
 ---
 
