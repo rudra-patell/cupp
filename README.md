@@ -5,8 +5,6 @@ It works by taking user-provided profile information (e.g., name, birthdate, spo
 highly customized list of password guesses based on common patterns like name+year, leetspeak, pet names,
 and more.
 
-This document provides an overview and explanation of every function in the `cupp.py` script.
-Requirements
 ------------
 
 You need Python 3 to run CUPP.
